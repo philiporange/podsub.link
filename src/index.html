@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PodSub Links Generator</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link rel="stylesheet" href="styles.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    </head>
+    <body>
+        <button
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Toggle dark/light mode"
+        >
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div id="app">
+            <header>
+                <h1>Podcast Links Generator</h1>
+                <p class="app-description">
+                    Enter a podcast feed URL to create a shareable page with
+                    subscription links for all major platforms.
+                </p>
+            </header>
+
+            <div class="input-container">
+                <input
+                    type="text"
+                    id="podcastUrl"
+                    placeholder="Enter podcast RSS feed URL..."
+                    aria-label="Podcast feed URL"
+                />
+                <span id="validation-message"
+                    >Please enter a valid podcast feed URL</span
+                >
+            </div>
+
+            <div class="action-buttons">
+                <button id="generate" disabled>
+                    <i class="fas fa-link"></i>
+                    Generate Links
+                </button>
+                <button id="clear">
+                    <i class="fas fa-times"></i>
+                    Clear
+                </button>
+            </div>
+
+            <!-- Area to display the generated link -->
+            <div
+                class="generated-link-container"
+                id="generatedLinkContainer"
+                style="display: none"
+            >
+                <h2>Your Shareable Link:</h2>
+                <div class="link-display">
+                    <a href="#" id="generatedLink" target="_blank"></a>
+                    <button id="copyGeneratedLink" title="Copy shareable link">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <!-- QR Code placeholder for the shareable link -->
+                <div id="qrCodeShareLink" class="qr-code-wrapper">
+                    <!-- QR code will be rendered here by JavaScript -->
+                </div>
+                <p class="link-instructions">
+                    Share this link with your audience!
+                </p>
+            </div>
+
+            <div class="placeholder-message" id="initialPlaceholder">
+                Enter a podcast feed URL and click "Generate Page Link" above.
+            </div>
+
+            <div class="attribution">
+                Generates a page with links compatible with various podcast
+                apps.
+            </div>
+        </div>
+
+        <div id="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage"></span>
+        </div>
+
+        <script src="app.js"></script>
+    </body>
+</html>

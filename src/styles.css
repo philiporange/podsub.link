@@ -1,0 +1,869 @@
+:root {
+    --primary-color: #4a6cf7;
+    --primary-hover: #3a5ce6;
+    --text-color: #333;
+    --text-secondary: #666;
+    --bg-color: #fff;
+    --card-bg: #f8f9fa;
+    --border-color: #e0e0e0;
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --radius: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+    --font-main:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+[data-theme="dark"] {
+    --text-color: #e0e0e0;
+    --text-secondary: #aaa;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease; /* Smoother theme transition */
+    min-height: 100vh;
+    display: flex; /* Helps footer stick to bottom if content is short */
+    flex-direction: column; /* Helps footer stick to bottom */
+}
+
+#app,
+#buttons-page-app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    width: 100%;
+    flex-grow: 1; /* Allow content to grow */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+h2 {
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.app-description,
+.page-description {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+code {
+    background-color: var(--card-bg);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+    color: var(--text-color); /* Ensure code color respects theme */
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+#validation-message {
+    /* position: absolute; */ /* Removed absolute positioning */
+    /* left: 0; */
+    display: block; /* Use block instead of absolute */
+    font-size: 0.85rem;
+    margin-top: 0.35rem; /* Adjusted margin */
+    color: var(--error-color);
+    display: none; /* Hide initially */
+    min-height: 1.2em; /* Reserve space to prevent layout shift */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+button {
+    cursor: pointer;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    display: inline-flex; /* Use inline-flex for better alignment with text */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    vertical-align: middle; /* Align button vertically if needed */
+}
+
+button i {
+    line-height: 1; /* Prevent icon from affecting button height */
+}
+
+button#generate {
+    background-color: var(--primary-color);
+    color: white;
+    flex: 1; /* Allow generate button to take more space */
+}
+
+button#generate:hover {
+    background-color: var(--primary-hover);
+}
+
+button#generate:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(
+        --primary-color
+    ); /* Keep color consistent when disabled */
+}
+
+button#clear {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    white-space: nowrap; /* Prevent clear button text wrapping */
+}
+
+button#clear:hover {
+    background-color: var(--border-color);
+}
+
+.theme-toggle {
+    position: fixed; /* Fixed position relative to viewport */
+    top: 1rem;
+    right: 1rem;
+    background: var(--card-bg); /* Give it a slight background */
+    border: 1px solid var(--border-color); /* Add subtle border */
+    font-size: 1.1rem; /* Slightly smaller */
+    color: var(--text-secondary); /* Use secondary text color */
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 40px; /* Fixed size */
+    height: 40px; /* Fixed size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001; /* Ensure it's above toast */
+    box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+
+/* Styles for buttons.html button container */
+.buttons-container {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(180px, 1fr)
+    ); /* Slightly wider min */
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Placeholder/Loading Messages */
+.placeholder-message,
+.loading-message {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    border: 1px dashed var(--border-color);
+    margin-top: 1rem;
+    grid-column: 1 / -1; /* Span full width if grid is active */
+}
+
+.loading-message {
+    border-style: solid; /* Solid border for loading */
+}
+
+/* Generated Link Display on index.html */
+.generated-link-container {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin-top: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.generated-link-container h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.link-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--bg-color);
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    word-break: break-all; /* Prevent long URLs from overflowing */
+}
+
+.link-display a {
+    flex-grow: 1;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-family: monospace; /* Use monospace for URL */
+    font-size: 0.9rem;
+}
+.link-display a:hover {
+    text-decoration: underline;
+}
+
+.link-display button {
+    padding: 0.5rem; /* Smaller padding for copy icon button */
+    font-size: 0.9rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    min-width: 36px; /* Ensure button has decent size */
+}
+.link-display button:hover {
+    background-color: var(--primary-hover);
+}
+
+.link-instructions {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* App Button Styling (buttons.html) */
+.app-button {
+    text-decoration: none;
+    padding: 0.8rem 1rem; /* Adjusted padding */
+    display: flex; /* Use flexbox */
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    text-align: center; /* Center text */
+    gap: 0.6rem; /* Slightly reduced gap */
+    border-radius: var(--radius);
+    font-weight: 600;
+    color: white !important; /* Ensure text is white */
+    background: #333; /* Default background */
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    position: relative;
+    /* overflow: hidden; /* Hide overflow */
+    min-height: 3.5rem; /* Ensure consistent height */
+    width: 100%; /* Make button fill its grid cell */
+}
+
+.app-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12); /* Slightly enhanced shadow */
+    opacity: 0.9; /* Slight opacity change on hover */
+}
+
+.app-button:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow); /* Reset shadow on click */
+}
+
+.app-button .platform-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    line-height: 1; /* Ensure icon aligns well */
+}
+
+.app-button .platform-name {
+    font-size: 0.9rem; /* Slightly smaller name */
+    line-height: 1.2; /* Improve readability if text wraps */
+    flex-grow: 0; /* Do not allow name to grow */
+    position: relative; /* For web indicator positioning */
+    /* text-align: center; -- Already handled by justify-content */
+}
+
+.web-indicator {
+    font-size: 0.7rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 0.3rem;
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+.app-button.web-link {
+    opacity: 0.85;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.app-button.web-link:hover {
+    opacity: 0.95;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.custom-indicator {
+    font-size: 0.7rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 0.3rem;
+    font-weight: normal;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+.app-button.configure-button {
+    background: linear-gradient(135deg, #666666, #888888);
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+}
+
+.app-button.configure-button:hover {
+    background: linear-gradient(135deg, #777777, #999999);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    transform: translateY(-1px);
+}
+
+/* Custom button wrapper with edit functionality */
+.custom-button-wrapper {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 3.5rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+    background: linear-gradient(45deg,
+        #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff,
+        #00ff80, #80ff00, #ffff00, #ff8000, #ff0080);
+    background-size: 400% 400%;
+    animation: rainbow-gradient 3s ease infinite;
+}
+
+@keyframes rainbow-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.custom-button-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+.button-inner {
+    flex: 1;
+    display: flex;
+}
+
+.custom-button-wrapper .app-button {
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100%;
+    margin: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.edit-custom-btn {
+    width: 3.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.edit-custom-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-left-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.edit-custom-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(1px);
+}
+
+.edit-custom-btn i {
+    line-height: 1;
+    opacity: 0.9;
+}
+
+.edit-custom-btn:hover i {
+    opacity: 1;
+}
+
+/* --- Styles for the Feed Link Box on buttons.html --- */
+.feed-link-container {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin-top: 2rem; /* Space above the box */
+    border: 1px solid var(--border-color);
+    text-align: center; /* Center the heading */
+}
+
+.feed-link-container h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color); /* Use normal text color or --primary-color */
+    display: flex; /* Align icon and text */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.feed-link-container h2 i {
+    /* Style the RSS icon */
+    color: #f26522; /* RSS orange */
+}
+
+.feed-url-display {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Increased gap slightly */
+    background-color: var(--bg-color);
+    padding: 0.75rem 1rem; /* Adjusted padding */
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+}
+
+/* --- Styles for the Custom Configuration Section --- */
+.custom-config-container {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin-top: 2rem;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.custom-config-container h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.custom-config-container h2 i {
+    color: #666666;
+}
+
+.config-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.config-form {
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: monospace;
+    transition: var(--transition);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+.input-group button {
+    align-self: flex-start;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-group button:hover {
+    background-color: var(--primary-hover);
+}
+
+.config-examples {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    margin-top: 1rem;
+}
+
+.config-examples p {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.config-examples ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.config-examples li {
+    margin-bottom: 0.3rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Style for the code element holding the URL */
+.feed-url-display code {
+    flex-grow: 1;
+    font-family: monospace; /* Use monospace for URL */
+    font-size: 0.9rem;
+    word-break: break-all; /* Prevent long URLs from overflowing */
+    text-align: left; /* Align URL text to the left */
+    background-color: transparent; /* Override default code background */
+    border: none; /* Override default code border */
+    padding: 0; /* Override default code padding */
+    color: var(--text-color); /* Ensure code color respects theme */
+}
+
+/* Style for the copy button next to the feed URL */
+.feed-url-display button {
+    padding: 0.6rem 0.9rem; /* Slightly adjust padding */
+    font-size: 0.9rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    white-space: nowrap; /* Prevent button text wrapping */
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.feed-url-display button:hover {
+    background-color: var(--primary-hover);
+}
+
+.feed-url-display button i {
+    margin-right: 0.4rem; /* Space between icon and text */
+}
+
+.feed-link-container .link-instructions {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem; /* Add margin if needed */
+}
+
+/* --- End Styles for Feed Link Box --- */
+
+/* Toast notification */
+#toast {
+    visibility: hidden;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--success-color);
+    color: white;
+    text-align: center;
+    border-radius: var(--radius);
+    padding: 12px 24px;
+    z-index: 1000;
+    box-shadow: var(--shadow);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0; /* Start hidden */
+    transition:
+        opacity 0.5s ease,
+        visibility 0.5s ease,
+        bottom 0.5s ease; /* Smooth transition */
+}
+
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 30px; /* Move up slightly when shown */
+    /* animation: fadein 0.5s forwards; */ /* Use transition instead */
+}
+
+/* Hide after delay handled by JS */
+/* @keyframes fadeout { ... } */
+
+#toast.error {
+    background-color: var(--error-color);
+}
+
+#toast i {
+    font-size: 1.1rem;
+}
+
+/* Platform-specific colors (apply to .app-button) */
+.app-button.apple {
+    background-color: #7d50f7;
+}
+.app-button.spotify {
+    background-color: #1db954;
+}
+.app-button.google {
+    background-color: #ea4335;
+}
+.app-button.overcast {
+    background-color: #fc7e0f;
+}
+.app-button.pocket-casts {
+    background-color: #f43e37;
+}
+.app-button.castro {
+    background-color: #00b265;
+}
+.app-button.stitcher {
+    background-color: #2a9fd8;
+} /* Keep if needed */
+.app-button.amazon {
+    background-color: #ff9900;
+}
+.app-button.rss {
+    background-color: #f26522;
+}
+
+/* QR Code Styling */
+.qr-code-wrapper {
+    margin-top: 20px; /* Space above the QR code block */
+    margin-bottom: 15px; /* Space below the QR code block */
+    display: flex; /* Use flex to easily center the QR code image */
+    justify-content: center; /* Horizontally center the QR code image */
+    padding: 15px; /* Padding within the wrapper, around the QR code image */
+    background-color: var(--card-bg); /* Background for the wrapper area */
+    border-radius: var(--radius); /* Consistent rounded corners */
+    box-shadow: var(--shadow); /* Consistent shadow */
+}
+
+.qr-code-wrapper canvas,
+.qr-code-wrapper img {
+    /* qrcode.js generates either a canvas or an img */
+    display: block; /* Ensure it's a block element */
+    max-width: min(80vw, 600px) !important; /* Set maximum width to smaller of 80vw or 600px */
+    max-height: min(80vw, 600px) !important; /* Set maximum height to match width for square QR */
+    width: auto !important; /* Allow QR code to grow up to the max width */
+    height: auto !important; /* Maintain aspect ratio */
+    border: 1px solid var(--border-color);
+    border-radius: 4px; /* Slightly rounded corners for the QR image itself */
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    width: 100%; /* Ensure footer spans width */
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Attribution (index.html specific) */
+.attribution {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .buttons-container {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(160px, 1fr)
+        ); /* Adjust min size */
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #app,
+    #buttons-page-app {
+        padding: 1.5rem 0.75rem; /* Reduce padding on small screens */
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .app-description,
+    .page-description {
+        font-size: 1rem;
+    }
+
+    .buttons-container {
+        /* Stack buttons vertically on very small screens */
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column; /* Stack generate/clear buttons */
+    }
+
+    button {
+        padding: 0.9rem 1rem; /* Adjust padding */
+        font-size: 0.95rem;
+    }
+
+    .theme-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    /* Styles for the Feed Link Box on small screens */
+    .feed-url-display {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .feed-url-display code {
+        margin-bottom: 0.75rem; /* Space below URL when stacked */
+        text-align: center; /* Center URL text when stacked */
+    }
+    .feed-url-display button {
+        width: 100%; /* Make button full width */
+        justify-content: center; /* Center button content */
+    }
+
+    .feed-link-container h2 {
+        font-size: 1.1rem; /* Slightly smaller heading */
+    }
+
+    .link-display {
+        flex-direction: column;
+        align-items: stretch; /* Stretch items */
+    }
+    .link-display a {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    .link-display button {
+        width: 100%; /* Make copy button full width */
+    }
+
+    #toast {
+        width: 90%; /* Make toast wider on small screens */
+        bottom: 10px;
+        padding: 10px 15px;
+    }
+    #toast.show {
+        bottom: 15px;
+    }
+}

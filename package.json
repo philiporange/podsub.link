@@ -1,0 +1,31 @@
+{
+  "name": "podsub-link",
+  "version": "0.1.0",
+  "description": "A tool to generate shareable podcast subscription links for all major platforms",
+  "main": "src/index.html",
+  "scripts": {
+    "dev": "node scripts/serve.js",
+    "build": "node scripts/build.js",
+    "clean": "rm -rf build/*",
+    "lint": "echo 'No linting configured'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "podcast",
+    "rss",
+    "subscription",
+    "generator"
+  ],
+  "author": "Philip Orange <git@philiporange.com>",
+  "license": "CC0",
+  "devDependencies": {
+    "archiver": "^7.0.1",
+    "clean-css": "^5.3.3",
+    "html-minifier-terser": "^7.2.0",
+    "terser": "^5.39.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/philiporange/podsub.link.git"
+  }
+}
