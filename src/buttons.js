@@ -4,7 +4,7 @@ const platformData = {
     apple: {
         name: "Apple Podcasts",
         icon: "fab fa-apple",
-        deepLink: (feedUrl) => `podcast://${feedUrl}`,
+        deepLink: (feedUrl) => `podcast:${feedUrl}`,
         webLink: (feedUrl) =>
             `https://podcasts.apple.com/podcast?itsct=${encodeURIComponent(feedUrl)}`,
         color: "#7D50F7",
@@ -35,7 +35,10 @@ const platformData = {
     downcast: {
         name: "Downcast",
         icon: "fas fa-download",
-        deepLink: (feedUrl) => `downcast://${feedUrl}`,
+        deepLink: (feedUrl) => {
+            const cleanUrl = feedUrl.replace(/^https?:\/\//, '');
+            return `downcast://${cleanUrl}`;
+        },
         webLink: (feedUrl) =>
             `https://downcastapp.com/`,
         color: "#5E5E5E",
@@ -46,7 +49,8 @@ const platformData = {
         icon: "fas fa-cog",
         deepLink: (feedUrl) => {
             const customScheme = localStorage.getItem('customUrlScheme') || '{URL}';
-            return customScheme.replace('{URL}', encodeURIComponent(feedUrl));
+            // Don't encode by default - let the custom app handle the raw URL
+            return customScheme.replace('{URL}', feedUrl);
         },
         webLink: (feedUrl) => '#',
         color: "#666666",
@@ -492,7 +496,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (feedUrlParam) {
         try {
-            const decodedFeedUrl = decodeURIComponent(feedUrlParam);
+            let decodedFeedUrl = decodeURIComponent(feedUrlParam);
+
+            // Ensure URL has proper protocol format (https:// not https/)
+            if (decodedFeedUrl.match(/^https?:\/[^\/]/)) {
+                decodedFeedUrl = decodedFeedUrl.replace(/^(https?):\//, '$1://');
+            }
+
+            // Add protocol if missing
+            if (!decodedFeedUrl.match(/^https?:\/\//)) {
+                decodedFeedUrl = 'https://' + decodedFeedUrl;
+            }
+
             if (isValidUrl(decodedFeedUrl)) {
                 validDecodedFeedUrl = decodedFeedUrl;
             } else {

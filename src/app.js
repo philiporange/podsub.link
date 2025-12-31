@@ -132,18 +132,29 @@ podcastUrlInput.addEventListener("input", () => {
 });
 
 generateBtn.addEventListener("click", () => {
-    const inputUrl = podcastUrlInput.value.trim();
+    let inputUrl = podcastUrlInput.value.trim();
     if (!inputUrl) {
         showToast("Please enter a podcast link first", true);
         return;
     }
+
+    // Ensure URL has proper protocol format (https:// not https/)
+    if (inputUrl.match(/^https?:\/[^\/]/)) {
+        inputUrl = inputUrl.replace(/^(https?):\//, '$1://');
+    }
+
+    // Add protocol if missing
+    if (!inputUrl.match(/^https?:\/\//)) {
+        inputUrl = 'https://' + inputUrl;
+    }
+
     if (!isValidUrl(inputUrl)) {
         showToast("Please enter a valid podcast feed URL", true);
         return;
     }
 
     const buttonsPageUrl = new URL("buttons.html", window.location.href);
-    buttonsPageUrl.searchParams.set("feed", encodeURIComponent(inputUrl));
+    buttonsPageUrl.searchParams.set("feed", inputUrl);
     const finalUrl = buttonsPageUrl.toString();
 
     if (
