@@ -1,21 +1,21 @@
 {
-  "name": "podsub-link",
-  "short_description": "A zero-backend tool to generate shareable podcast subscription links for all major platforms.",
-  "long_description": "PodSub Links Generator is a static web application that creates shareable pages with platform-specific deep links for podcast RSS feeds. It features a dual-page architecture: a generator page where users input any podcast RSS feed URL, and a subscription landing page displaying platform buttons for Apple Podcasts, Overcast, Pocket Casts, and other services. The application includes QR code generation for easy mobile sharing, dark/light theme support, and allows configuration of custom URL schemes for unlisted podcast apps. Being pure HTML/CSS/JavaScript with no backend requirements, it can be deployed to any static hosting service.",
+  "name": "podsub.link",
+  "short_description": "A zero-backend tool to generate shareable podcast subscription links for all major platforms",
+  "long_description": "PodSub Links Generator is a static web application that creates shareable pages with platform-specific deep links for podcast RSS feeds. It features a dual-page architecture: a generator page where users input any podcast RSS feed URL, and a subscription landing page displaying platform buttons for Apple Podcasts, Overcast, Pocket Casts, Castro, Podcast Addict, Downcast, and others. The application includes QR code generation for easy mobile sharing, dark/light theme support, custom URL scheme configuration for unlisted podcast apps, and URL validation for various podcast hosting providers. Being pure HTML/CSS/JavaScript with no backend requirements, it can be deployed to any static hosting service and includes production build tools for minification and packaging.",
   "keywords": [
     "podcast",
     "rss",
     "subscription",
-    "generator",
     "deep-links",
-    "static-site",
     "qr-code",
+    "static-site",
     "web-app",
-    "mobile-friendly",
-    "zero-backend",
-    "shareable-links",
+    "mobile-responsive",
+    "link-generator",
     "url-scheme",
-    "podcast-apps"
+    "podcast-apps",
+    "zero-backend",
+    "shareable-links"
   ],
   "primary_language": "JavaScript",
   "languages": [
@@ -34,15 +34,15 @@
     },
     {
       "path": "src/buttons.html",
-      "description": "Subscription landing page that displays platform-specific subscription buttons and feed details for a given RSS URL"
+      "description": "Subscription landing page that displays platform-specific subscription buttons and feed details"
     },
     {
       "path": "src/app.js",
-      "description": "Generator logic handling URL validation, link generation, QR code creation, and clipboard operations for the index page"
+      "description": "Generator logic handling URL validation, link generation, QR code creation, and clipboard operations"
     },
     {
       "path": "src/buttons.js",
-      "description": "Subscription page logic that generates platform buttons with deep links, manages custom URL schemes, and handles feed URL display"
+      "description": "Subscription page logic generating platform buttons with deep links, managing custom URL schemes, and feed URL display"
     },
     {
       "path": "src/styles.css",
@@ -50,25 +50,11 @@
     },
     {
       "path": "scripts/serve.js",
-      "description": "Development server that serves files from src directory on a configurable port with proper MIME type handling"
+      "description": "Development server that serves files from src directory with proper MIME type handling"
     },
     {
       "path": "scripts/build.js",
-      "description": "Production build script that minifies HTML, CSS, and JavaScript files and creates a deployable zip archive"
+      "description": "Production build script that minifies HTML, CSS, and JavaScript and creates a deployable zip archive"
     }
-  ],
-  "git": {
-    "is_repo": true,
-    "remote_url": "https://github.com/philiporange/podsub.link.git",
-    "github_name": "philiporange/podsub.link",
-    "default_branch": "master",
-    "last_commit": "2025-10-05T00:52:01+01:00"
-  },
-  "stats": {
-    "files": 14,
-    "lines_of_code": 1034,
-    "size_bytes": 195976
-  },
-  "generated_at": "2025-12-06T22:24:59.501118",
-  "generator_version": "1.0.0"
+  ]
 }
